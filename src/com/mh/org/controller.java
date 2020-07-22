@@ -47,7 +47,25 @@ public class controller extends HttpServlet {
 			rd.forward(request, response);
 		}
 		
+		// (3)(5) 전체 행 분할하여 페이지 수 설정하기 
 		else if (url.equals("/index.ws")) {
+			
+			int pagecount = dao.selectPageCount(); // (4) dao에서 selectPageCount 만들기
+			request.setAttribute("pagecount", pagecount);
+			
+			String page = request.getParameter("page");
+			if( page == null ) {
+				page = "1";
+			}
+			
+			int ipage = Integer.parseInt(page) * 10 - 9;
+			int lpage = ipage + 9;
+			
+			List<FreeBoardDTO> list = dao.selectALL(ipage, lpage);
+			request.setAttribute("list", list);
+			
+			RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/index.jsp");
+			rd.forward(request, response);
 			
 			// jstl 서블릿으로
 //			List<String> list = new ArrayList<String>();
@@ -57,18 +75,7 @@ public class controller extends HttpServlet {
 //			
 //			request.setAttribute("list", list);
 			
-//			System.out.println("dafdkj");
-			
-			String page = request.getParameter("page");
-			if( page == null ) {
-				
-			}
-			
-			List<FreeBoardDTO> list = dao.selectALL();
-			request.setAttribute("list", list);
-			
-			RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/index.jsp");
-			rd.forward(request, response);
+//			System.out.println("dafdkj");			
 		}
 		
 		else if(url.equals("/insert.ws")) {

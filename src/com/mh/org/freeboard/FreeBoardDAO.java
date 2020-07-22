@@ -10,7 +10,7 @@ import com.mg.org.util.DataSource;
 
 public class FreeBoardDAO { //Controller의 
 	
-	public List<FreeBoardDTO> selectALL() {
+	public List<FreeBoardDTO> selectALL(int ipage, int lpage) {
 		
 		List<FreeBoardDTO> list = new ArrayList<FreeBoardDTO>();
 		
@@ -18,9 +18,18 @@ public class FreeBoardDAO { //Controller의
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
+		// (1) 하위쿼리를 이용하여 페이징 처리, 한 페이지당 10개의 행이 나오도록 하기 위함. -> (2) index.jsp
 		try {			
 			conn = DataSource.getConnection();
-			pstmt = conn.prepareStatement("select * from freeboard order by reg_date desc");
+			pstmt = conn.prepareStatement("select * from ( " + 
+										"select " + 
+										"ROW_NUMBER() over (order by idx desc) rownum " + 
+										",* " + 
+										"from freeboard ) a " + 
+										"where rownum between ? and ?");
+			pstmt.setInt(1, ipage);
+			pstmt.setInt(2, lpage);
+			
 			rs = pstmt.executeQuery();
 			
 			while (rs.next()) {
@@ -103,7 +112,7 @@ public class FreeBoardDAO { //Controller의
 		
 		pstmt.executeUpdate();
 		
-		DataSource.doClose(null, pstmt, conn);
+		DataSource.doClose(rs, pstmt, conn);
 	}
 
 	public void deleteALL(String[] idx) throws Exception {
@@ -149,6 +158,35 @@ public class FreeBoardDAO { //Controller의
 		finally {
 			DataSource.doClose(null, pstmt, conn);
 		}		
+	}
+
+	public int selectPageCount() {
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = DataSource.getConnection();
+			pstmt = conn.prepareStatement("select count(*) from freeboard");
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				int rowcount = rs.getInt(1);
+				int pagecount = rowcount / 10;
+				
+				if( rowcount % 10 > 0 ) {
+					pagecount += 1;
+				}
+				return pagecount;
+			}			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			DataSource.doClose(rs, pstmt, conn);			
+		}
+		return 0;
 	}
 
 	

@@ -8,11 +8,16 @@
 <%@ include file="../resources/cssjs/head.jsp" %>
 <script type="text/javascript">
 $(document).ready(function(){
-	$("#index").on("click", function(){
-		widow.location = "index.ws";
+	$(".index").on("click", function(){
+		window.location = "index.ws";
 	});	
 });
 </script>
+<style type="text/css">
+.fonta{
+font-size: 40px;
+}
+</style>
 </head>
 
 <body>
@@ -37,13 +42,14 @@ $(document).ready(function(){
 					<tr>
 						<td colspan="2" style="text-align: center;">
 							<input class="btn-primary" type="submit" value="저장"/>
-							<input class="btn-primary" type="reset" value="취소"/>
+							<input class="index btn-primary fonta" type="reset" value="취소"/>
 					</tr>					
 				</table>
 			</form>
 		</div>
+		
 		<div class="row">
-			<button id="insert" class="btn-primary">글목록</button>
+			<button class="index btn-primary">목록보기</button>
 		</div>
 	</div>
 </body>

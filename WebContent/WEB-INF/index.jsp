@@ -80,14 +80,15 @@
 			</form>			
 		</div>
 		
-<!-- 		<div class="row" style="text-align : center"> -->
-<!-- 			<a href="index.ws?page=1">[ 1 ]</a> -->
-<!-- 			<a href="index.ws?page=2">[ 2 ]</a> -->
-<!-- 			<a href="index.ws?page=3">[ 3 ]</a> -->
-<!-- 		</div> -->
+		<!-- (2) 페이징 처리를 위한 파라메터 값 설정 -> (3) controller의 index.ws에서 전체 행 분할하여 페이지 수 설정하기 -->
+		<div class="row" style="text-align : center">
+		<c:forEach begin="1" end="${pagecount}" var="i">
+			<a href="index.ws?page=${i}">[ ${i} ]</a>
+		</c:forEach>
+		</div>
 	
 		<div class="row">		
-			<button id="insert" class="btn-primary">글쓰기</button> <!-- btn은 버튼 형식, info는 버튼 색상 지정하는 부트스트랩 -->
+			<button type="button" id="insert" class="btn-primary">글쓰기</button> <!-- btn은 버튼 형식, info는 버튼 색상 지정하는 부트스트랩 -->
 			<button id="delete" class="btn-primary">삭제</button>
 		</div>
 		

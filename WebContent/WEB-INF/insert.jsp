@@ -11,7 +11,7 @@
 
 <script type="text/javascript">
 $(document).ready(function(){	
-	$("#insert").on("click", function(){
+	$(".index").on("click", function(){
 		window.location = "index.ws";
 		//alert("jqeury 함수 실행"); // 해당 게시물 클릭시 팝업창 띄워보는 확인용
 	});
@@ -39,16 +39,15 @@ $(document).ready(function(){
 					<tr>
 						<td colspan="2" style="text-align : center;">
 							<input class="btn-info" type="submit" value="저장"/>
-							<input class="btn-info" type="submit" value="취소"/>
+							<input class="index btn-info" type="reset" value="취소"/>
 					</tr>
 				</table>
 			</form>
 		</div>
 			
 		<div class="row">		
-			<button id="index" class="btn-info">목록보기</button>
-		</div>
-		
+			<button class="index" id="insert" class="btn-info">목록보기</button>
+		</div>		
 	</div>
 </body>
 </html>
